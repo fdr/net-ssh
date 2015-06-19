@@ -23,6 +23,11 @@ module Net; module SSH
     if RUBY_VERSION >= '1.9' || RUBY_PLATFORM == 'java'
       def self.io_select(*params)
         IO.select(*params)
+      rescue Exception => e
+        puts "FDRDBG"
+        puts "#{$@.first}: #{$!.message} (#{$!.class})", $@.drop(1).map{|s| "\t#{s}"}
+        puts "END FDRDBG"
+        raise
       end
     else
       SELECT_MUTEX = Mutex.new

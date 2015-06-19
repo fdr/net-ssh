@@ -207,7 +207,16 @@ module Net; module SSH; module Connection
 
       r = listeners.keys
       w = r.select { |w2| w2.respond_to?(:pending_write?) && w2.pending_write? }
-      readers, writers, = Net::SSH::Compat.io_select(r, w, nil, io_select_wait(wait))
+      begin
+        readers, writers, = Net::SSH::Compat.io_select(r, w, nil, io_select_wait(wait))
+      rescue Exception => e
+        puts "FDRDBG"
+        puts "#{$@.first}: #{$!.message} (#{$!.class})", $@.drop(1).map{|s| "\t#{s}"}
+        puts "END FDRDBG"
+        raise
+      end
+
+      puts 'FDRAFTEREXCEPTIONBLOCK'
 
       postprocess(readers, writers)
     end
