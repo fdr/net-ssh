@@ -42,7 +42,7 @@ begin
 
     s.license = "MIT"
 
-    unless ENV['NET_SSH_NOKEY']
+    if false
       signing_key = File.join('/mnt/gem/', 'net-ssh-private_key.pem')
       s.signing_key = File.join('/mnt/gem/', 'net-ssh-private_key.pem')
       s.cert_chain  = ['net-ssh-public_cert.pem']
